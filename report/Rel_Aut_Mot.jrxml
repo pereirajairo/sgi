@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rel_Aut_Mot" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9c3c04e3-9ef3-4d35-8ab7-d33ea93e25eb">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="7fd3d53d-b4a6-4cc9-bbc4-5d7c718a83ad"/>
+	<parameter name="consultar" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[$P!{consultar}]]>
+	</queryString>
+	<field name="CLIENTE" class="java.math.BigDecimal"/>
+	<field name="AUTO_MOTO" class="java.lang.String"/>
+	<field name="CODGRE" class="java.math.BigDecimal"/>
+	<field name="NOME_CLIENTE" class="java.lang.String"/>
+	<field name="EMISSAO" class="java.sql.Timestamp"/>
+	<field name="PESO_FATURADO" class="java.math.BigDecimal"/>
+	<field name="PESO_CREDIT0_MANUAL" class="java.math.BigDecimal"/>
+	<field name="PESO_DEBITO_MANUAL" class="java.math.BigDecimal"/>
+	<field name="PESO_RECEBIDO" class="java.math.BigDecimal"/>
+	<field name="DEBITO" class="java.lang.String"/>
+	<field name="NOME_GRUPO" class="java.lang.String"/>
+	<field name="GRUPO" class="java.lang.String"/>
+	<field name="LANCAMENTO" class="java.math.BigDecimal"/>
+	<field name="SEQUENCIA" class="java.math.BigDecimal"/>
+	<variable name="PESO_FATURADO_1" class="java.math.BigDecimal" resetType="Group" resetGroup="cliente" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_FATURADO}]]></variableExpression>
+	</variable>
+	<variable name="PESO_RECEBIDO_1" class="java.math.BigDecimal" resetType="Group" resetGroup="cliente" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_RECEBIDO}]]></variableExpression>
+	</variable>
+	<variable name="PESO_CREDIT0_MANUAL_1" class="java.math.BigDecimal" resetType="Group" resetGroup="cliente" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_CREDIT0_MANUAL}]]></variableExpression>
+	</variable>
+	<variable name="PESO_DEBITO_MANUAL_1" class="java.math.BigDecimal" resetType="Group" resetGroup="cliente" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_DEBITO_MANUAL}]]></variableExpression>
+	</variable>
+	<variable name="SALDO" class="java.lang.String">
+		<variableExpression><![CDATA[(($V{PESO_DEBITO_MANUAL_1})+
+($V{PESO_RECEBIDO_1}-$V{PESO_FATURADO_1}))-$V{PESO_CREDIT0_MANUAL_1}]]></variableExpression>
+	</variable>
+	<variable name="PESO_FATURADO_2" class="java.math.BigDecimal" resetType="Group" resetGroup="Grupo" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_FATURADO}]]></variableExpression>
+	</variable>
+	<variable name="PESO_RECEBIDO_2" class="java.math.BigDecimal" resetType="Group" resetGroup="Grupo" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_RECEBIDO}]]></variableExpression>
+	</variable>
+	<variable name="PESO_CREDIT0_MANUAL_2" class="java.math.BigDecimal" resetType="Group" resetGroup="Grupo" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_CREDIT0_MANUAL}]]></variableExpression>
+	</variable>
+	<variable name="PESO_DEBITO_MANUAL_2" class="java.math.BigDecimal" resetType="Group" resetGroup="Grupo" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_DEBITO_MANUAL}]]></variableExpression>
+	</variable>
+	<variable name="SALDO_GRUPO" class="java.lang.String">
+		<variableExpression><![CDATA[
+(($V{PESO_DEBITO_MANUAL_2})+
+($V{PESO_RECEBIDO_2}-$V{PESO_FATURADO_2}))-$V{PESO_CREDIT0_MANUAL_2}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="PESO_FATURADO_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_FATURADO}]]></variableExpression>
+	</variable>
+	<variable name="PESO_RECEBIDO_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_RECEBIDO}]]></variableExpression>
+	</variable>
+	<variable name="PESO_CREDIT0_MANUAL_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_CREDIT0_MANUAL}]]></variableExpression>
+	</variable>
+	<variable name="PESO_DEBITO_MANUAL_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_DEBITO_MANUAL}]]></variableExpression>
+	</variable>
+	<variable name="SALDO_TOTAL" class="java.lang.String">
+		<variableExpression><![CDATA[
+(($V{PESO_DEBITO_MANUAL_3})+
+($V{PESO_RECEBIDO_3}-$V{PESO_FATURADO_3}))-$V{PESO_CREDIT0_MANUAL_3}]]></variableExpression>
+	</variable>
+	<group name="Grupo">
+		<groupExpression><![CDATA[$F{CODGRE}]]></groupExpression>
+		<groupHeader>
+			<band height="24">
+				<textField>
+					<reportElement x="1" y="2" width="57" height="20" uuid="31001834-e5c8-493e-9dbe-66e7daffbd91"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CODGRE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="58" y="2" width="282" height="20" uuid="6b6f8612-f9c1-4101-8d9c-ba9fe9f30c48"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{GRUPO}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="26">
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="383" y="2" width="53" height="20" uuid="5e768f0d-b20c-40e1-9e3b-0e1a8507105a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PESO_FATURADO_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="267" y="3" width="61" height="20" uuid="2bc1b35e-1f96-48a9-8948-58f77d92b11e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PESO_RECEBIDO_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="489" y="3" width="66" height="20" uuid="9488fa3b-61be-4239-bc37-c7952aa3bc14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SALDO_GRUPO}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="1" y="22" width="553" height="1" uuid="b0e092ec-f817-4f8b-991d-795d0c0b31f2"/>
+				</line>
+				<staticText>
+					<reportElement x="165" y="3" width="102" height="15" uuid="7f7a7a7a-df9f-4ffe-a871-2b6d584d920c"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[GRUPO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="1" y="3" width="37" height="15" uuid="8aa53fba-03dc-45eb-938c-07d7229fbe7a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[LCT]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="38" y="3" width="32" height="15" uuid="2f42858a-ed42-4cd1-98cc-4caa57b3558e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SEQUENCIA}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="109" y="3" width="37" height="15" uuid="1bf4ef3e-34a5-4576-aac8-dffc7801c4be"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LANCAMENTO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="77" y="3" width="32" height="15" uuid="aa1125fb-ef4d-42ff-a0d0-2c8bb3e9d34f"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[SEQ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="329" y="2" width="45" height="20" forecolor="#3333FF" uuid="57eadd3f-670a-4e02-ac5c-76bbf96d8dd5"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PESO_CREDIT0_MANUAL_1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="436" y="3" width="53" height="20" forecolor="#FF3333" uuid="f2dd256a-28ac-4f98-9ccc-b50751344b6e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PESO_DEBITO_MANUAL_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="cliente">
+		<groupExpression><![CDATA[$F{CLIENTE}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="24">
+				<textField>
+					<reportElement x="1" y="2" width="57" height="20" uuid="2146e06a-9921-4e69-86d6-6ca6b00690b4"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CLIENTE}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="383" y="2" width="53" height="20" uuid="c47f1105-6b2a-4800-a27e-6fbebf1dd75b"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PESO_FATURADO_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="267" y="2" width="61" height="20" uuid="c9236bd9-3bad-48ee-82e8-12e9d33d3e5c"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PESO_RECEBIDO_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="489" y="2" width="65" height="20" uuid="9919c97b-d0b8-4272-a3c5-d87b4eb1968d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SALDO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="58" y="2" width="153" height="20" uuid="5c8dc6b7-2b72-4738-8957-688b33099277"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NOME_CLIENTE}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="211" y="2" width="56" height="20" uuid="9d9de0f0-213b-43ad-9e2e-f19a707af13d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EMISSAO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="329" y="2" width="45" height="20" forecolor="#3333FF" uuid="fef5e0e9-f68c-4cf2-98f4-e7407f84c69d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PESO_CREDIT0_MANUAL_1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="436" y="2" width="53" height="20" forecolor="#FF3333" uuid="c335c003-c2af-44b0-a341-a9a68d7e454e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PESO_DEBITO_MANUAL_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="556" height="30" uuid="aff42044-d136-4020-8966-1131998ded39"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELAÇÃO DE SUCATA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="29" width="554" height="1" uuid="05e4b7cf-a910-4c6e-85c0-0d79ac95dc26"/>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="2" width="53" height="15" uuid="4bb3370e-ad5b-4273-8552-76ca0fc1c3c3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="2" width="153" height="15" uuid="02b9438f-78cd-4313-aa44-5394ee4c489c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="211" y="2" width="56" height="15" uuid="61d0e17f-b5e9-4a59-93a9-d074b7c821e1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ULT. MOV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="267" y="2" width="61" height="15" uuid="3ad96d94-bc15-40b2-ab2c-fc6a8e02abfd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CRÉDITO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="383" y="2" width="53" height="15" uuid="8d5da7b6-dd6c-4c1d-9808-56acf4d26193"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DÉBITO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="2" width="66" height="15" uuid="bc46858f-2c6d-4cff-ae9f-48cad3a59f49"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALDO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="18" width="554" height="1" uuid="b78d209d-21e5-42d9-b9d7-71ead0326077"/>
+			</line>
+			<staticText>
+				<reportElement x="328" y="2" width="46" height="15" forecolor="#3333FF" uuid="f49957fa-d01a-4d48-8752-daae1efd7361"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MANUAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="2" width="53" height="15" forecolor="#FF3333" uuid="5459f5be-dbf9-4753-b486-2a40b2168ccc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MANUAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<pageFooter>
+		<band height="23">
+			<line>
+				<reportElement x="0" y="2" width="554" height="1" uuid="f0cbe7c3-ff3b-4c4b-9b39-41b7dd467928"/>
+			</line>
+			<textField>
+				<reportElement x="436" y="3" width="80" height="20" uuid="4127fb72-c2e5-41c4-8e95-362c8f84a852"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina   "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="516" y="3" width="40" height="20" uuid="b6ad4606-a86c-4d3c-bc00-ad3f09389b9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="3" width="276" height="20" uuid="db168b5b-b064-4e63-86bb-43f80ba5a407"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO SUCATA]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="23" splitType="Stretch">
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="383" y="3" width="53" height="20" uuid="e8bdbd88-bd41-4272-9131-d7aa60e55d9b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PESO_FATURADO_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="267" y="3" width="61" height="20" uuid="395f935a-ec4e-490d-8b1b-8d634d9cc603"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PESO_RECEBIDO_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="489" y="3" width="65" height="20" uuid="ce03f867-45c8-46dd-93a8-67121ebdc617"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SALDO_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="2" width="45" height="20" forecolor="#3333FF" uuid="0da5f9ac-e151-4313-91c9-759463ddf507"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PESO_CREDIT0_MANUAL_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="3" width="53" height="20" forecolor="#FF3333" uuid="d9ce2073-9ec0-4814-a4b4-da5f0af2b582"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PESO_DEBITO_MANUAL_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

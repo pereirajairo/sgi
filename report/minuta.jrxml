@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="minuta" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="384a3f9b-e9a9-44cc-a400-77e7b861569a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="92"/>
+	<parameter name="vnMinuta" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT minu.USU_CODEMP    AS empresa,
+       minu.USU_CODFIL    AS filial,
+       minu.USU_CODLAN    AS lancamento_minuuta,
+       minu.USU_NROCAR    AS numero_carga,
+       minu.USU_CODTRA    AS transportadora,
+       minu.USU_PESLIQ    AS peso_liquido,
+       minu.USU_DATEMI    AS data_emissao,
+       minu.USU_DATEMB    AS data_embarque,
+       minu.USU_SITMIN    AS situacao_minuuta,
+       minu.USU_ENVEMA    AS enviar_email,
+       minu.USU_CODUSU    AS usuario,
+       minu.USU_QTDFAT    AS quantidade,
+       minu.USU_QTDVOL    AS volume,
+       minu.USU_OBSMIN    AS observacao,
+       minunot.USU_CODLAN AS lancamento_minuuta_nota,
+       minunot.USU_CODCLI AS cliente,
+       minunot.USU_PESLIQ AS peso_liquido_nota,
+       minunot.USU_DATEMI AS data_emissao_nota,
+       minunot.USU_QTDFAT AS quantidade_faturada,
+       minunot.USU_QTDVOL AS volume_nota,
+       minunot.USU_NUMNFV AS nota_fiscal,
+       minunot.USU_TIPMIN AS tipo_minuuta,
+       tra.nomtra         as nome_transportadora,
+       cli.nomcli         as nome_cliente,
+       cli.cidcli         as cidade_cliente,
+       cli.sigufs         as estado
+  FROM e085cli cli, e073tra tra, USU_TINTMINNOT minunot
+ INNER JOIN USU_TINTMIN minu
+    ON minunot.USU_CODEMP = minu.USU_CODEMP
+   AND minunot.USU_CODMIN = minu.USU_CODLAN
+   AND minunot.USU_CODFIL = minu.USU_CODFIL
+ where minu.usu_codtra = tra.codtra
+   and minunot.usu_codcli = cli.codcli
+   and minu.USU_CODLAN = $P{vnMinuta}]]>
+	</queryString>
+	<field name="EMPRESA" class="java.math.BigDecimal"/>
+	<field name="FILIAL" class="java.math.BigDecimal"/>
+	<field name="LANCAMENTO_MINUUTA" class="java.math.BigDecimal"/>
+	<field name="NUMERO_CARGA" class="java.math.BigDecimal"/>
+	<field name="TRANSPORTADORA" class="java.math.BigDecimal"/>
+	<field name="PESO_LIQUIDO" class="java.math.BigDecimal"/>
+	<field name="DATA_EMISSAO" class="java.sql.Timestamp"/>
+	<field name="DATA_EMBARQUE" class="java.sql.Timestamp"/>
+	<field name="SITUACAO_MINUUTA" class="java.lang.String"/>
+	<field name="ENVIAR_EMAIL" class="java.lang.String"/>
+	<field name="USUARIO" class="java.math.BigDecimal"/>
+	<field name="QUANTIDADE" class="java.math.BigDecimal"/>
+	<field name="VOLUME" class="java.math.BigDecimal"/>
+	<field name="OBSERVACAO" class="java.lang.String"/>
+	<field name="LANCAMENTO_MINUUTA_NOTA" class="java.math.BigDecimal"/>
+	<field name="CLIENTE" class="java.math.BigDecimal"/>
+	<field name="PESO_LIQUIDO_NOTA" class="java.math.BigDecimal"/>
+	<field name="DATA_EMISSAO_NOTA" class="java.sql.Timestamp"/>
+	<field name="QUANTIDADE_FATURADA" class="java.math.BigDecimal"/>
+	<field name="VOLUME_NOTA" class="java.math.BigDecimal"/>
+	<field name="NOTA_FISCAL" class="java.math.BigDecimal"/>
+	<field name="TIPO_MINUUTA" class="java.lang.String"/>
+	<field name="NOME_TRANSPORTADORA" class="java.lang.String"/>
+	<field name="NOME_CLIENTE" class="java.lang.String"/>
+	<field name="CIDADE_CLIENTE" class="java.lang.String"/>
+	<field name="ESTADO" class="java.lang.String"/>
+	<variable name="PESO_LIQUIDO_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_LIQUIDO}]]></variableExpression>
+	</variable>
+	<variable name="QUANTIDADE_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{QUANTIDADE}]]></variableExpression>
+	</variable>
+	<variable name="VOLUME_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{VOLUME}]]></variableExpression>
+	</variable>
+	<group name="Lancamento">
+		<groupExpression><![CDATA[$F{LANCAMENTO_MINUUTA}]]></groupExpression>
+		<groupHeader>
+			<band height="2"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="69">
+				<line>
+					<reportElement x="0" y="2" width="555" height="1" uuid="bb092831-22c2-4312-986c-4428d24cd3f2"/>
+				</line>
+				<line>
+					<reportElement x="0" y="68" width="555" height="1" uuid="7b412633-adae-44d5-bda7-b41c8a286d82"/>
+				</line>
+				<staticText>
+					<reportElement x="370" y="3" width="100" height="20" uuid="7a8a52fc-fdbc-4fdd-8525-996485c798e1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Volume:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="370" y="23" width="100" height="20" uuid="d859f0ee-cdff-42be-8800-40a5f1baab6d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Quantidade:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="370" y="43" width="100" height="20" uuid="537f1609-9ae6-4689-a064-2a84d7cf8c74"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Peso:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="476" y="3" width="79" height="20" uuid="40932463-7613-42f1-89e8-948504eef126"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{VOLUME}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="476" y="23" width="79" height="20" uuid="4af5775a-d18a-46fe-8fd2-db9ad58d8af5"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{QUANTIDADE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="476" y="43" width="79" height="20" uuid="8fe7c305-90d7-4fe0-b03d-1afb13143528"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{PESO_LIQUIDO}]]></textFieldExpression>
+				</textField>
+				<componentElement>
+					<reportElement x="4" y="13" width="200" height="50" uuid="d60e0342-02cf-45e5-bcca-e4037dc3d872"/>
+					<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Codabar" drawText="false" checksumRequired="false">
+						<jr:codeExpression><![CDATA[$F{LANCAMENTO_MINUUTA}]]></jr:codeExpression>
+					</jr:barbecue>
+				</componentElement>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="555" height="32" uuid="129923b2-2f27-4614-a749-50e7aa57f4ae"/>
+				<textElement textAlignment="Center">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[MINUTA DE COLETA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="49" width="555" height="1" uuid="c04c2947-46ef-4ae1-9474-1c6498392c3e"/>
+			</line>
+			<image>
+				<reportElement x="4" y="8" width="105" height="40" uuid="24e7150d-9ffb-450d-be9a-9d78822d56c5"/>
+				<imageExpression><![CDATA["C:\\Recebimento\\report\\logo.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="c03b0566-fdec-47a7-945e-c3fa94135c2b"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="100" y="2" width="53" height="20" uuid="33d64717-e872-4217-9623-a783890169de"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TRANSPORTADORA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="428" y="2" width="62" height="20" uuid="ed52f184-f024-4581-afea-7c3553b0c667"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATA_EMISSAO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="428" y="22" width="62" height="20" uuid="23320017-4892-4231-8f43-16cf3cae74b1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATA_EMBARQUE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="22" width="53" height="20" uuid="33aaabd9-04b4-4db3-a26c-1783090344b9"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LANCAMENTO_MINUUTA}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="40" width="555" height="1" uuid="ad45077c-63a4-4cbf-b038-900d2c1296d2"/>
+			</line>
+			<componentElement>
+				<reportElement x="506" y="4" width="49" height="30" uuid="caffee27-589a-408c-b73d-f4b52e07bc84"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Codabar" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{LANCAMENTO_MINUUTA}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="153" y="2" width="197" height="20" uuid="e32a96d5-0692-49e6-91fd-99c9d361e8b0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOME_TRANSPORTADORA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="2" width="100" height="20" uuid="63a75806-0663-400f-9be6-c0a3e1dff69c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Transportadora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="22" width="103" height="20" uuid="c16e666b-4ce2-4dc3-b9a8-87de27d8d2fa"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[MInuta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="2" width="39" height="20" uuid="8ccc95e5-cbb8-4686-a03f-e32638dbb96f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Emissão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="20" width="39" height="20" uuid="d1c611d7-0093-40bd-ae22-c77891b02281"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Embarque]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="65" height="20" uuid="867dfdfa-8275-40fe-9db8-4aaf43d583ff"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="2" width="35" height="20" uuid="1c0ee061-8b41-4c18-a32c-5253942472f9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="428" y="2" width="42" height="20" uuid="2e58b2e5-b4a5-4373-b3b5-380b2897849e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtdy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="2" width="36" height="20" uuid="67bed8aa-8ab4-4461-a8fe-8ae78f76f19d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Volume]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="506" y="2" width="49" height="20" uuid="3a1e1fb8-d6ef-4b64-8607-ee18f9f85a7e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="2" width="217" height="20" uuid="e49a5194-8342-4030-b386-d436ac348fab"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="2" width="19" height="20" uuid="6e201198-4c68-41f6-b09a-cb7634f42805"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="2" width="100" height="20" uuid="bd95c637-7b7e-4760-9bce-242331ca096f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cidade]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="65" height="20" uuid="dc8b616c-22ff-4633-8098-0c5868eba82f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOTA_FISCAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="0" width="35" height="20" uuid="691aa6ad-bffe-475b-bbf3-547adc83cee7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CLIENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="0" width="42" height="20" uuid="a8544627-792e-4b1c-9f06-c68d66b61c70"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{QUANTIDADE_FATURADA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="0" width="49" height="20" uuid="67c022bd-8501-4509-a494-741bfb262e2d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESO_LIQUIDO_NOTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="1" width="217" height="20" uuid="4ffb822e-4342-4a4e-92e3-fcdbd0d58e4e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOME_CLIENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="409" y="0" width="19" height="20" uuid="94060fd5-7193-4f41-929f-a734d313e34c"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ESTADO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="0" width="36" height="20" uuid="fe0121e2-c23d-46ef-9473-c29d8cc09160"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VOLUME_NOTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="317" y="0" width="100" height="20" uuid="a7d1d389-a992-4fc8-bc93-2953ffbd17ae"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CIDADE_CLIENTE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="189" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="3" width="555" height="22" uuid="2bde30ff-4bad-4dcc-bbff-04330200fa44"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Declaro ter recebido as Notas Fiscais, acima relacionadas, sobre as quais assumo total e inteira responsabilidade, ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="25" width="555" height="22" uuid="44493fc9-ba1f-4436-a445-71655bd8e860"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[comprometendo-me a entregar os canhotos das mesmas, devidamente assinados pelos destinatários.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="309402c0-ef3c-4959-aaac-765edd77d4d3"/>
+			</line>
+			<line>
+				<reportElement x="0" y="188" width="555" height="1" uuid="3b179719-8585-41d9-92f7-6963ca9258df"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="59" width="428" height="20" uuid="6a238155-af22-45eb-b6d5-fb7e704ca29e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["TRANSPORTADORA: "+$F{TRANSPORTADORA} +" " +$F{NOME_TRANSPORTADORA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="92" width="240" height="20" uuid="b0d53f17-9dc0-4e89-8c11-585d4f54f1d4"/>
+				<text><![CDATA[PLACA VEÍCULO : _____________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="128" width="297" height="20" uuid="cd269c77-9d00-4a78-9a13-391bb930cd75"/>
+				<text><![CDATA[Data Carregamento: ______/______/__________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="275" y="92" width="280" height="20" uuid="25cf697b-7b77-4d54-b213-a531c8b76f45"/>
+				<text><![CDATA[Motorista:____________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="275" y="128" width="280" height="20" uuid="467e39e1-397c-4c46-8512-00e8a6213c2e"/>
+				<text><![CDATA[Assinatura:____________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="275" y="168" width="280" height="20" uuid="f759cc63-3ca0-4f1c-b108-1d0dedfbaa7a"/>
+				<text><![CDATA[Conferente:____________________________________]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="168" width="200" height="20" uuid="918270d5-b202-4e83-a1fc-c49f0d352345"/>
+				<textFieldExpression><![CDATA["Data Emissão: "+new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="2" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="2" splitType="Stretch"/>
+	</summary>
+</jasperReport>

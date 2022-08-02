@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sucata_conta_corrente" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4ceb5d83-a529-41af-b22d-b34e15b1a87e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select case usu_debcre
+         when '3 - DEBITO' then
+          usu_pesfat + usu_pesmov
+         when '4 - CREDITO' then
+          usu_pesrec
+         else
+          usu_pessuc
+       end as pesoProcesso,
+
+       case usu_debcre
+         when '3 - DEBITO' then
+          ((usu_pesfat + usu_pessuc) * -1) +
+          (usu_pesfat / (mov.usu_perren) * 100)
+         when '4 - CREDITO' then
+          usu_pesrec * (mov.usu_perren / 100)
+         else
+          usu_pesped
+       end as pesoProcessoCredito,
+
+       case usu_debcre
+         when '4 - CREDITO' then
+          usu_pesrec
+         else
+          0
+       end as peso_sucata_cre,
+
+       case usu_debcre
+         when '4 - CREDITO' then
+          usu_pesrec * (mov.usu_perren / 100)
+         else
+          0
+       end as peso_produto_cre,
+
+       case usu_debcre
+         when '3 - DEBITO' then
+          ((usu_pesfat + usu_pessuc) * -1) +
+          (usu_pesfat / (mov.usu_perren) * 100)
+         else
+          0
+       end as peso_sucata_deb,
+
+       case usu_debcre
+         when '3 - DEBITO' then
+          'DEB: ' || usu_codpro
+         when '4 - CREDITO' then
+          'CRE: ' || usu_codsuc
+         else
+          'PED: ' || usu_codpro
+       end as situacaoPeso,
+
+       case usu_debcre
+         when '3 - DEBITO' then
+          usu_pesped
+         when '4 - CREDITO' then
+          usu_pesord
+         else
+          usu_pesped
+       end as pesoOriginal,
+
+       case usu_debcre
+         when '3 - DEBITO' then
+          usu_pesfat
+         when '4 - CREDITO' then
+          usu_pesrec
+         else
+          usu_pesped
+       end as pesoEnviado,
+
+       case usu_debcre
+         when '3 - DEBITO' then
+          usu_pesfat - usu_qtdped
+         when '4 - CREDITO' then
+          usu_pesrec - usu_pesord
+         else
+          0
+       end as pesoDiferenca,
+
+       case usu_debcre
+         when '3 - DEBITO' then
+          'DEBITO'
+         when '4 - CREDITO' then
+          'CREDITO'
+         else
+          'OUTROS'
+       end as debito_credito,
+
+       case usu_debcre
+         when '3 - DEBITO' then
+          'CHUMBO'
+         when '4 - CREDITO' then
+          'SUCATA'
+         else
+          'OUTROS'
+       end as processo_debito_credito,
+
+       case usu_autmot
+         when 'AUT' then
+          usu_pessuc
+         else
+          0
+       end as peso_sucata_auto,
+
+       case usu_autmot
+         when 'MOT' then
+          usu_pessuc
+         else
+          0
+       end as peso_sucata_moto,
+
+       mov.*,
+       cli.nomcli,
+       cli.apecli,
+       cli.sigufs,
+       cli.cidcli,
+
+       case usu_autmot
+         when 'IND' then
+          'IND.'
+         when 'AUT' then
+          'AUTO'
+         when 'MOT' then
+          'MOTO'
+       end as usu_autmot,
+       usu_codsuc,
+       usu_codpro,
+       pro.despro as dessuc,
+       usu_codpro || ' - ' || pro.despro || '-' || mov.usu_perren as sucata_rentabilidade,
+       usu_codpro || ' - ' || pro.despro as sucata_descricao,
+       to_char(mov.usu_datger, 'mm') as mes,
+       to_char(mov.usu_datger, 'yyyy') as ano
+  from e085cli cli, usu_tsucmov mov
+  left join e075pro pro
+    on (mov.usu_codemp = pro.codemp and mov.usu_codsuc = pro.codpro)
+ where usu_debcre in ('3 - DEBITO', '4 - CREDITO')
+   and usu_autmot in ('IND')
+   and mov.usu_codcli = cli.codcli
+   and mov.usu_codcli = 7801
+   and usu_debcre not in '0 - REMOVIDO'
+ order by mov.usu_codcli, mov.usu_numped, mov.usu_sitsuc, mov.usu_debcre]]>
+	</queryString>
+	<field name="PESOPROCESSO" class="java.math.BigDecimal"/>
+	<field name="PESOPROCESSOCREDITO" class="java.math.BigDecimal"/>
+	<field name="PESO_SUCATA_CRE" class="java.math.BigDecimal"/>
+	<field name="PESO_PRODUTO_CRE" class="java.math.BigDecimal"/>
+	<field name="PESO_SUCATA_DEB" class="java.math.BigDecimal"/>
+	<field name="SITUACAOPESO" class="java.lang.String"/>
+	<field name="PESOORIGINAL" class="java.math.BigDecimal"/>
+	<field name="PESOENVIADO" class="java.math.BigDecimal"/>
+	<field name="PESODIFERENCA" class="java.math.BigDecimal"/>
+	<field name="DEBITO_CREDITO" class="java.lang.String"/>
+	<field name="PROCESSO_DEBITO_CREDITO" class="java.lang.String"/>
+	<field name="PESO_SUCATA_AUTO" class="java.math.BigDecimal"/>
+	<field name="PESO_SUCATA_MOTO" class="java.math.BigDecimal"/>
+	<field name="USU_CODEMP" class="java.math.BigDecimal"/>
+	<field name="USU_CODFIL" class="java.math.BigDecimal"/>
+	<field name="USU_CODCLI" class="java.math.BigDecimal"/>
+	<field name="USU_NUMPED" class="java.math.BigDecimal"/>
+	<field name="USU_CODLAN" class="java.math.BigDecimal"/>
+	<field name="USU_SEQMOV" class="java.math.BigDecimal"/>
+	<field name="USU_NUMNFV" class="java.math.BigDecimal"/>
+	<field name="USU_NUMNFC" class="java.math.BigDecimal"/>
+	<field name="USU_NUMOCP" class="java.math.BigDecimal"/>
+	<field name="USU_CODPRO" class="java.lang.String"/>
+	<field name="USU_CODSNF" class="java.lang.String"/>
+	<field name="USU_PESSUC" class="java.math.BigDecimal"/>
+	<field name="USU_PESAJU" class="java.math.BigDecimal"/>
+	<field name="USU_PESMOV" class="java.math.BigDecimal"/>
+	<field name="USU_QTDPED" class="java.math.BigDecimal"/>
+	<field name="USU_QTDDEV" class="java.math.BigDecimal"/>
+	<field name="USU_PESDEV" class="java.math.BigDecimal"/>
+	<field name="USU_DEBCRE" class="java.lang.String"/>
+	<field name="USU_AUTMOT" class="java.lang.String"/>
+	<field name="USU_OBSMOV" class="java.lang.String"/>
+	<field name="USU_OBSACE" class="java.lang.String"/>
+	<field name="USU_NUMTIT" class="java.lang.String"/>
+	<field name="USU_CODTPT" class="java.lang.String"/>
+	<field name="USU_TIPMOV" class="java.lang.String"/>
+	<field name="USU_PERREN" class="java.math.BigDecimal"/>
+	<field name="USU_CODUSU" class="java.math.BigDecimal"/>
+	<field name="USU_DATGER" class="java.sql.Timestamp"/>
+	<field name="USU_DATMOV" class="java.sql.Timestamp"/>
+	<field name="USU_HORGER" class="java.math.BigDecimal"/>
+	<field name="USU_HORMOV" class="java.math.BigDecimal"/>
+	<field name="USU_TNSPRO" class="java.lang.String"/>
+	<field name="USU_GEROCP" class="java.lang.String"/>
+	<field name="USU_ENVEMA" class="java.lang.String"/>
+	<field name="USU_EMAPAR" class="java.lang.String"/>
+	<field name="USU_PESORD" class="java.math.BigDecimal"/>
+	<field name="USU_PESREC" class="java.math.BigDecimal"/>
+	<field name="USU_PESSAL" class="java.math.BigDecimal"/>
+	<field name="USU_CODFILSUC" class="java.math.BigDecimal"/>
+	<field name="USU_PESFAT" class="java.math.BigDecimal"/>
+	<field name="USU_SITSUC" class="java.lang.String"/>
+	<field name="USU_CODPES" class="java.math.BigDecimal"/>
+	<field name="USU_CODMIN" class="java.math.BigDecimal"/>
+	<field name="USU_CODSUC" class="java.lang.String"/>
+	<field name="USU_SITPED" class="java.lang.String"/>
+	<field name="USU_PESPED" class="java.math.BigDecimal"/>
+	<field name="NOMCLI" class="java.lang.String"/>
+	<field name="APECLI" class="java.lang.String"/>
+	<field name="SIGUFS" class="java.lang.String"/>
+	<field name="CIDCLI" class="java.lang.String"/>
+	<field name="DESSUC" class="java.lang.String"/>
+	<field name="SUCATA_RENTABILIDADE" class="java.lang.String"/>
+	<field name="SUCATA_DESCRICAO" class="java.lang.String"/>
+	<field name="MES" class="java.lang.String"/>
+	<field name="ANO" class="java.lang.String"/>
+	<variable name="PESOPROCESSO_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESOPROCESSO}]]></variableExpression>
+	</variable>
+	<variable name="PESO_SUCATA_CRE_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_SUCATA_CRE}]]></variableExpression>
+	</variable>
+	<variable name="PESO_PRODUTO_CRE_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_PRODUTO_CRE}]]></variableExpression>
+	</variable>
+	<variable name="PESO_SUCATA_DEB_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESO_SUCATA_DEB}]]></variableExpression>
+	</variable>
+	<variable name="PESOENVIADO_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESOENVIADO}]]></variableExpression>
+	</variable>
+	<variable name="USU_PESFAT_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{USU_PESFAT}]]></variableExpression>
+	</variable>
+	<variable name="USU_PESMOV_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{USU_PESMOV}]]></variableExpression>
+	</variable>
+	<group name="cliente">
+		<groupExpression><![CDATA[$F{USU_CODCLI}]]></groupExpression>
+		<groupHeader>
+			<band height="23">
+				<textField>
+					<reportElement x="0" y="0" width="455" height="20" uuid="d72bb278-3a7f-43ee-8316-b20c8830b50a"/>
+					<textFieldExpression><![CDATA[$F{NOMCLI}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="pedido">
+		<groupExpression><![CDATA[$F{USU_NUMPED}]]></groupExpression>
+		<groupHeader>
+			<band height="6"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="4">
+				<line>
+					<reportElement x="1" y="2" width="550" height="1" uuid="24ccfc08-3677-4312-beb6-7be39c4027f5"/>
+					<graphicElement>
+						<pen lineStyle="Dashed"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="movimento">
+		<groupExpression><![CDATA[$F{USU_DEBCRE}]]></groupExpression>
+		<groupHeader>
+			<band height="2"/>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="134" y="5" width="46" height="20" uuid="6e75e218-b22d-4fe4-8165-58efd1e101cb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USU_PERREN}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="74" y="5" width="60" height="20" uuid="f5feb942-d1a7-4751-b1bd-ce86632a488b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESOPROCESSO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0;-###0">
+				<reportElement x="234" y="5" width="64" height="20" uuid="677be540-e6bf-470c-b0be-5897b862ed68"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USU_NUMNFV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="5" width="54" height="20" uuid="02d1d2c5-688e-4b7a-b58e-57a6683fe98a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USU_NUMPED}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="396" y="5" width="72" height="20" uuid="9cd871f2-a2f3-4506-8f8b-bfdfe2b1acd7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USU_NUMNFC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="5" width="73" height="20" uuid="e62001bc-621d-4e9f-9c44-58c3db8bb8f7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEBITO_CREDITO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="298" y="5" width="69" height="20" uuid="4026d25e-fb36-4fe1-a6fd-7ac591d5c832"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USU_PESFAT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="485" y="5" width="70" height="20" uuid="707de733-5ea4-4a5d-b983-1d5bcb6cd0dd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USU_PESREC}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="16" y="17" width="100" height="20" uuid="354ac95c-a20d-4292-a936-4d9b9adbc314"/>
+				<textFieldExpression><![CDATA[$V{PESO_SUCATA_CRE_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="116" y="17" width="100" height="20" uuid="9c4bc0b2-9cd3-4b35-a029-bc834216d8ff"/>
+				<textFieldExpression><![CDATA[$V{PESO_PRODUTO_CRE_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="216" y="17" width="54" height="20" uuid="e64f3078-671a-466e-bf0f-6631a193c5dd"/>
+				<textFieldExpression><![CDATA[$V{PESO_SUCATA_DEB_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="281" y="17" width="65" height="20" uuid="3be1f700-7651-4539-b212-800d32396a78"/>
+				<textFieldExpression><![CDATA[$V{USU_PESFAT_1}+$V{USU_PESMOV_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="355" y="17" width="65" height="20" uuid="e2c5707a-1676-4cf0-83cb-7cfcbd78b3fd"/>
+				<textFieldExpression><![CDATA[$V{PESO_SUCATA_CRE_1}-$V{PESO_SUCATA_DEB_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="437" y="17" width="65" height="20" uuid="b44db496-8442-4b4f-af41-fc4b0eadee67"/>
+				<textFieldExpression><![CDATA[$V{PESO_PRODUTO_CRE_1}-($V{USU_PESFAT_1}+$V{USU_PESMOV_1})]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Descontos" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5b185b4f-563b-4f21-9acc-b4184227c907">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="vnCarga" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select usu_codimp as codigoImpureza,
+          usu_seqcad as sequenciaCadastro,
+          usu_nrocar as numeroCarga,
+          usu_seqcar as sequenciaCarga,
+          usu_qtdpal as quantidadePalletRuim,
+          usu_perdes as percentualDesconto,
+          usu_pesimp as pesoDesconto,
+          usu_qtdprv as pesoTotalDescontar,
+          CASE
+            WHEN usu_codimp = '1' THEN
+             'AGUA'
+            WHEN usu_codimp = '2' THEN
+             'FERRO'
+            WHEN usu_codimp = '3' THEN
+             'PLASTICO'
+            ELSE
+             'OUTRO'
+          END AS descricaoImpureza
+     from usu_tintimp
+     where usu_nrocar = $P{vnCarga}]]>
+	</queryString>
+	<field name="CODIGOIMPUREZA" class="java.math.BigDecimal"/>
+	<field name="SEQUENCIACADASTRO" class="java.math.BigDecimal"/>
+	<field name="NUMEROCARGA" class="java.math.BigDecimal"/>
+	<field name="SEQUENCIACARGA" class="java.math.BigDecimal"/>
+	<field name="QUANTIDADEPALLETRUIM" class="java.math.BigDecimal"/>
+	<field name="PERCENTUALDESCONTO" class="java.math.BigDecimal"/>
+	<field name="PESODESCONTO" class="java.math.BigDecimal"/>
+	<field name="PESOTOTALDESCONTAR" class="java.math.BigDecimal"/>
+	<field name="DESCRICAOIMPUREZA" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="279ebade-f3bd-4e5c-b2d4-f12e804938d3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relação de desconto]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="19" width="555" height="1" uuid="a5643ffe-499a-4a68-a99b-57cd7ddea403"/>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="13">
+			<staticText>
+				<reportElement x="0" y="0" width="38" height="12" uuid="ca24a04d-66e3-4979-aec5-348251258907"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="1" width="188" height="12" uuid="37b8c407-b86e-49ea-a04b-a6abcff15a9a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="1" width="57" height="12" uuid="8de2c521-7cef-4a7a-b88b-64c4ee60896f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtdy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="1" width="85" height="12" uuid="0a44aa6c-83e9-4a23-af43-da67e1f8fcad"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso Analisado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="100" height="12" uuid="a6220c7b-e64a-4529-a74e-09931df5d0f2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[% Desconto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="75" height="12" uuid="cee93993-791a-4f21-89ea-0946ebc4ab31"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total desconto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="1" width="38" height="20" uuid="65073a9d-7a57-4bce-baa0-5b03d5263d3f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CODIGOIMPUREZA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="480" y="1" width="75" height="20" uuid="e699f6a6-48e4-4fb6-acfe-9231ae4c7209"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESODESCONTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="38" y="1" width="188" height="20" uuid="8da39e04-605f-45ca-8aac-bb5d231a87b7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESCRICAOIMPUREZA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="238" y="1" width="57" height="20" uuid="80ab33ff-ef60-4dbd-9f67-6f518a021fda"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{QUANTIDADEPALLETRUIM}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="380" y="1" width="100" height="20" uuid="3a83b776-3cf0-4c27-877f-dc9e86c3f025"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERCENTUALDESCONTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="295" y="1" width="85" height="20" uuid="b47cefc6-ab03-4384-a7fe-77de9bd3e87b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESOTOTALDESCONTAR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

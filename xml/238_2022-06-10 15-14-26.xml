@@ -1,0 +1,20 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+<S:Body>
+<ns2:GravarNotasFiscaisSaidaResponse xmlns:ns2="http://services.senior.com.br">
+<result>
+<erroExecucao xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+<mensagemRetorno>Processado com Sucesso.</mensagemRetorno>
+<retornosNotasSaida>
+<cnpjFilial xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+<codEmp>0</codEmp>
+<codFil>0</codFil>
+<codSnf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+<ideExt>0</ideExt>
+<numNfv>0</numNfv>
+<retorno>Natureza de Operação (5405) incompatível com o Estado do Cliente.</retorno>
+</retornosNotasSaida>
+<tipoRetorno>1</tipoRetorno>
+</result>
+</ns2:GravarNotasFiscaisSaidaResponse>
+</S:Body>
+</S:Envelope>

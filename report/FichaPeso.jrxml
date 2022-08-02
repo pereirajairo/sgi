@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FichaPeso" pageWidth="595" pageHeight="411" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="59142c03-09dc-44e1-a942-3d1239e5d424">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Desenvolvimento\\sgi\\report\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vnCarga" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vHoraSaida" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vHoraEntrada" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vTransportadora" class="java.lang.String"/>
+	<parameter name="vOrigem" class="java.lang.String"/>
+	<parameter name="vLogo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select car.usu_codemp as empresa,
+       car.usu_codfil as filial,
+       car.usu_nrocar as numerocarga,
+       car.usu_plavei as placa,
+       car.usu_nommot as motorista,
+       car.usu_pesent as pesoentrada,
+       car.usu_datent as dataentrada,
+       car.usu_horent as horaentrada,
+       car.usu_pessai as pesosaida,
+       car.usu_datsai as datasaida,
+       car.usu_horsai as horasaida,
+       car.usu_pesvei as pesoveiculo,
+       car.usu_obscar as observacaoCarga,
+       car.usu_sitcar as situacaoCarga,
+       car.usu_cardes as tipoCarga,
+       car.usu_pesliq as pesoLiquido,
+       car.usu_numocp as ordemCompra,
+       car.usu_pesemb as pesoEmbalagem,
+       car.usu_pesimp as pesoImpureza,
+       car.usu_codtra as transportadora,
+       ite.usu_codfor as fornecedor,
+       ite.usu_seqcar as sequenciaCarga,
+       ite.usu_codpro as produto,
+       ite.usu_despro as descricaoProduto,
+       ite.usu_qtdprv as quantidadeocp,
+       ite.usu_pesite as quantidadePallet,
+       ite.usu_obsite as observacaoItem,
+       ite.usu_seqpes as sequenciaPeso,
+       ite.usu_pesemb as pesoEmbalagem,
+       0 as pesoUnitEmbalagem,
+       ite.usu_numnfv as notaFiscal,
+       ite.usu_codemb as embalagem,
+       upper(emb.desemb) as descricaoEmbalagem
+  from usu_tintcarga car, usu_tintitens ite
+   left join e059emb emb
+    on (emb.codemb = ite.usu_codemb)
+ where car.usu_codemp = ite.usu_codemp
+   and car.usu_codfil = ite.usu_codfil
+   and car.usu_nrocar = ite.usu_nrocar
+and car.usu_nrocar = $P{vnCarga}]]>
+	</queryString>
+	<field name="EMPRESA" class="java.math.BigDecimal"/>
+	<field name="FILIAL" class="java.math.BigDecimal"/>
+	<field name="NUMEROCARGA" class="java.math.BigDecimal"/>
+	<field name="PLACA" class="java.lang.String"/>
+	<field name="MOTORISTA" class="java.lang.String"/>
+	<field name="PESOENTRADA" class="java.lang.Double"/>
+	<field name="DATAENTRADA" class="java.sql.Timestamp"/>
+	<field name="HORAENTRADA" class="java.math.BigDecimal"/>
+	<field name="PESOSAIDA" class="java.lang.Double"/>
+	<field name="DATASAIDA" class="java.sql.Timestamp"/>
+	<field name="HORASAIDA" class="java.math.BigDecimal"/>
+	<field name="PESOVEICULO" class="java.lang.Double"/>
+	<field name="OBSERVACAOCARGA" class="java.lang.String"/>
+	<field name="SITUACAOCARGA" class="java.lang.String"/>
+	<field name="TIPOCARGA" class="java.lang.String"/>
+	<field name="PESOLIQUIDO" class="java.lang.Double"/>
+	<field name="ORDEMCOMPRA" class="java.lang.String"/>
+	<field name="PESOEMBALAGEM" class="java.lang.Double"/>
+	<field name="PESOIMPUREZA" class="java.lang.Double"/>
+	<field name="TRANSPORTADORA" class="java.math.BigDecimal"/>
+	<field name="FORNECEDOR" class="java.math.BigDecimal"/>
+	<field name="SEQUENCIACARGA" class="java.math.BigDecimal"/>
+	<field name="PRODUTO" class="java.lang.String"/>
+	<field name="DESCRICAOPRODUTO" class="java.lang.String"/>
+	<field name="QUANTIDADEOCP" class="java.lang.Double"/>
+	<field name="QUANTIDADEPALLET" class="java.lang.Double"/>
+	<field name="OBSERVACAOITEM" class="java.lang.String"/>
+	<field name="SEQUENCIAPESO" class="java.math.BigDecimal"/>
+	<field name="PESOUNITEMBALAGEM" class="java.lang.Double"/>
+	<field name="NOTAFISCAL" class="java.math.BigDecimal"/>
+	<field name="EMBALAGEM" class="java.math.BigDecimal"/>
+	<field name="DESCRICAOEMBALAGEM" class="java.lang.String"/>
+	<variable name="vSubTot" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESOVEICULO} -  $F{PESOEMBALAGEM}]]></variableExpression>
+	</variable>
+	<variable name="vPesEmb" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{PESOEMBALAGEM} / $F{QUANTIDADEPALLET}]]></variableExpression>
+	</variable>
+	<variable name="PESOENTRADA_1" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESOENTRADA}]]></variableExpression>
+	</variable>
+	<variable name="PESOSAIDA_1" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESOSAIDA}]]></variableExpression>
+	</variable>
+	<variable name="PESOVEICULO_1" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESOVEICULO}]]></variableExpression>
+	</variable>
+	<variable name="PESOEMBALAGEM_1" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESOEMBALAGEM}]]></variableExpression>
+	</variable>
+	<variable name="PESOIMPUREZA_1" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESOIMPUREZA}]]></variableExpression>
+	</variable>
+	<variable name="PESOLIQUIDO_1" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{PESOLIQUIDO}]]></variableExpression>
+	</variable>
+	<variable name="vHorEnt" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="155" splitType="Stretch">
+			<textField>
+				<reportElement x="64" y="47" width="55" height="20" uuid="4205cf86-4ce9-49c4-a11c-088a16ac07bf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUMEROCARGA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="90" width="162" height="20" uuid="6e9e2ebd-8d71-4eca-8dd7-ad564c3bde02"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PLACA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="67" width="137" height="20" uuid="a4eb387a-8d26-4e5c-8166-3abd0845677b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MOTORISTA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="64" y="66" width="55" height="20" uuid="d58791d0-7ad0-4ad7-aa51-f42d8d3e76f9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATAENTRADA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="23" width="555" height="23" uuid="a80c8054-2ebd-4bb4-9a71-add7034569d7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FICHA DE PESAGEM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="23" uuid="c7966010-899f-424d-b822-c3c66a7effb0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BATERIAS ERBS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="47" width="60" height="20" uuid="14296cf6-f921-4b77-8ff8-0138ac2c1c6b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tcket]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="46" width="555" height="1" uuid="7c8316dd-01e3-4e5f-9117-bc38cb53e7e9"/>
+			</line>
+			<line>
+				<reportElement x="0" y="110" width="555" height="1" uuid="33a8f864-ae3a-4ed3-9c9b-8ba62878d669"/>
+			</line>
+			<staticText>
+				<reportElement x="4" y="66" width="60" height="20" uuid="062efd4c-57aa-49b9-b2dc-e3edb00ce8a5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Data Entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="90" width="60" height="20" uuid="ac3ad525-6671-4e46-9b10-07817dc1ec90"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hora Entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="67" width="60" height="20" uuid="0841d8f6-8653-4653-bc24-1a51a7e1a7be"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Data saída]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="90" width="60" height="20" uuid="f9642911-4580-4973-956d-57a3207940f8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hora  saída]]></text>
+			</staticText>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="203" y="67" width="43" height="20" uuid="ebb09695-e8a4-4434-b49a-0f4e735ff1c0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATASAIDA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="257" y="67" width="60" height="20" uuid="7a71d668-a960-430b-b6af-0efb9c8a0d26"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Motorista]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="90" width="60" height="20" uuid="683e3b0f-fb35-4a2a-ac34-311ffb2c0ec6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Placa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="46" width="60" height="20" uuid="45b9e5e0-0421-457f-97e3-f30d9e2e12da"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Transportadora]]></text>
+			</staticText>
+			<textField pattern="EEE, d MMM yyyy HH:mm">
+				<reportElement x="369" y="0" width="186" height="23" uuid="109ee0f3-1927-41a0-8fb5-31e89489b3aa"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="478" y="55" width="77" height="50" uuid="4a23fa55-651f-4558-aa51-0b79e03961b9"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{NUMEROCARGA}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="203" y="90" width="43" height="20" uuid="8bb7194c-520b-4ff7-a891-8cdee9f99562"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vHoraSaida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="64" y="90" width="55" height="20" uuid="1e7e8f12-17a3-4f94-8be9-a90029926583"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vHoraEntrada}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="4" y="0" width="555" height="1" uuid="643fda49-7f3e-4109-9120-cffcbf5b76cc"/>
+			</line>
+			<textField>
+				<reportElement x="203" y="47" width="254" height="19" uuid="01169fea-54d8-4738-a8bc-d6624ab2ac9a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vTransportadora}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="130" width="555" height="1" uuid="6420d43a-5841-4eee-bb24-ec83bbd0001a"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="111" width="64" height="20" uuid="96527b2d-4a04-475e-9260-a71754192b4e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ordem Compra:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="64" y="111" width="55" height="20" uuid="e9fdff93-b044-40a0-8421-2d55f69459aa"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ORDEMCOMPRA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="134" y="111" width="292" height="20" uuid="de389cef-f0db-420b-b210-1a6df2916b7d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{vOrigem}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="465" y="111" width="90" height="20" uuid="4b495e05-14db-4a66-8727-88aa44e3f3be"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOTAFISCAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="431" y="111" width="34" height="20" uuid="c7e7f402-7ffb-4184-a790-8bb9152fe8fa"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nota..:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="457" y="23" width="98" height="20" uuid="67aa3d96-749d-4d28-9812-55d204777089"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TIPO..: " +$F{TIPOCARGA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="131" width="555" height="16" uuid="ba6f155d-e411-4dac-9d82-f3bad90b3916"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["["+$F{OBSERVACAOCARGA}+"]"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="150" width="555" height="1" uuid="907375a1-7bd5-43d7-92ac-1786d6ccb764"/>
+			</line>
+			<image>
+				<reportElement x="4" y="11" width="122" height="32" uuid="10fba2fc-45db-475b-9b50-0b55b27a9fd7"/>
+				<imageExpression><![CDATA["C:\\Desenvolvimento\\sgi\\report\\logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="49" height="20" uuid="c0addb04-1636-440f-ac36-ab4ffc4bb3d1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="1" width="163" height="20" uuid="f964619a-f588-41bd-92ab-6a022230a0c7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="1" width="38" height="20" uuid="d5c93ef2-4af5-4199-88ec-408bd677b7db"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMB.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="296" y="1" width="93" height="20" uuid="bf0480e6-ea77-4f12-98d4-1a31a4610c3b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO EMBALAGEM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="1" width="49" height="20" uuid="94ebc844-6d16-49ff-a439-9c327b99dfa3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QTDY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="438" y="1" width="55" height="20" uuid="9e24a7da-62a1-4518-8f82-858d9273c1ed"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PESO EMB..]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="493" y="1" width="62" height="20" uuid="4c2d27a6-aaa1-4e29-87fe-9a65bf68f139"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PESO TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="1" width="45" height="20" uuid="c868a1fc-4b5f-41c9-b6be-8394fe7faf35"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QTDY OC]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="2" width="49" height="16" uuid="373497e9-22c4-4698-9536-7a6b7d450799"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRODUTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="49" y="2" width="163" height="16" uuid="141f5415-7318-4efa-aff4-a774c1040b07"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESCRICAOPRODUTO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="257" y="2" width="38" height="16" uuid="7dae9a83-a97f-432b-8b71-7b7788810a36"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EMBALAGEM}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="389" y="2" width="49" height="16" uuid="7f8d0a24-9118-45d5-b832-fe688b64ab8f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{QUANTIDADEPALLET}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="493" y="2" width="62" height="16" uuid="cfc8b7ec-98bb-4c81-9f65-0802ae037e05"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESOEMBALAGEM}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="296" y="2" width="93" height="16" uuid="1fe33b86-4c20-487b-93f2-92574f7fa837"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESCRICAOEMBALAGEM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="2" width="45" height="16" uuid="10279c53-2690-4778-926f-bebd9922d960"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{QUANTIDADEOCP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="438" y="2" width="55" height="16" uuid="d8cf4429-9a76-4432-973b-7fd7a9752744"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vPesEmb}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="4" y="6" width="60" height="20" uuid="2673cd66-f82c-42e5-acee-01150576ce2b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso Entrada]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="5" width="555" height="1" uuid="2d30bf78-99f3-4d52-b188-9220e7d41812"/>
+			</line>
+			<staticText>
+				<reportElement x="4" y="25" width="60" height="20" uuid="e212aeaf-0cd0-4df0-add9-44d5a87b8753"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso saída]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="6" width="73" height="20" uuid="489faad3-6c49-42b7-8681-ea414609725b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso Bruto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="26" width="73" height="20" uuid="2b16c99d-f87e-4488-b1b8-bf2dcfa884fb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso Embalagem]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="296" y="26" width="73" height="20" uuid="876dc503-2cde-416a-bd40-194a252d4c33"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso Desconto]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="46" width="555" height="1" uuid="9a0fe3af-0fd5-4f94-b62b-ed09a1a75c61"/>
+			</line>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="369" y="6" width="57" height="20" uuid="a3790b1f-f602-41d0-b098-6fa91722ec83"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{vSubTot}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="296" y="6" width="73" height="20" uuid="87193815-61f3-4c77-9d25-c013d54d1aed"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sub. Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="482" y="3" width="73" height="20" forecolor="#0000FF" uuid="18109500-a74a-4e82-a7d6-c04283a7bba3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso liquido]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="64" y="6" width="71" height="20" uuid="24da10b7-3784-49bc-9660-094f1a8bcd5d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESOENTRADA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="64" y="27" width="71" height="20" uuid="b0b3f9fd-33bc-49e5-9ef4-43b3b4f1b415"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESOSAIDA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="224" y="8" width="72" height="20" uuid="b87064e0-260e-48be-b7bc-e120c607def0"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESOVEICULO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="369" y="25" width="57" height="20" uuid="d1ac84d3-dc7a-42f4-9e7a-e04b4ff32793"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESOIMPUREZA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="224" y="26" width="71" height="20" uuid="938abef6-e6bf-4ca3-98c4-b0cd34ce4c32"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESOEMBALAGEM}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="482" y="24" width="73" height="20" forecolor="#0000FF" uuid="169accc0-95f4-400f-8569-5468f3c6452b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PESOLIQUIDO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="102">
+			<line>
+				<reportElement x="0" y="3" width="555" height="1" uuid="7a0aed65-f502-482c-8b21-f78ee813a341"/>
+			</line>
+			<subreport>
+				<reportElement x="0" y="2" width="555" height="100" uuid="633534b1-d89c-4378-bc9d-eb7853c89d9f"/>
+				<subreportParameter name="vnCarga"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "FichaPesoDesconto.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>
